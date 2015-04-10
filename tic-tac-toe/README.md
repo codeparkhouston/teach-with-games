@@ -2,7 +2,7 @@
 
 Creating [Tic-Tac-Toe] will require the following steps:
 
-1. Create the following images:
+1. Create the following images (all the same size squares):
 
   - s.png (square empty)
   - x.png
@@ -11,83 +11,175 @@ Creating [Tic-Tac-Toe] will require the following steps:
 1. Create/style the board (simple):
 
   ```html
-  <img src="s.png"><img src="s.png"><img src="s.png"></br>
-  <img src="s.png"><img src="s.png"><img src="s.png"></br>
-  <img src="s.png"><img src="s.png"><img src="s.png"></br>
+  <div id="board">
+  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
+  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
+  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
+  </div>
   ```
 
   ```css
-  img {
+  #board img {
     border: 10px solid black;
   }
   ```
 
-1. Or create a correctly-styled board (advanced):
-
-    ```html
-    <div id="board">
-      <div class="row"><img src="s.png"><img src="s.png"><img src="s.png"></div>
-      <div class="row"><img src="s.png"><img src="s.png"><img src="s.png"></div>
-      <div class="row"><img src="s.png"><img src="s.png"><img src="s.png"></div>
-    </div>
-    ```
-
-    ```css
-    #board, .row {
-      margin: 0;
-      padding: 0;
-    }
-
-    /* draw grid lines */
-    .row img {
-      border-bottom: 10px solid black;
-      border-right: 10px solid black;
-    }
-
-    /* cells on the far-right don't need right borders */
-    .row img:last-child {
-      border-right: 0;
-    }
-
-    /* cells on the bottom don't need bottom borders */
-    .row:last-child img {
-      border-bottom: 0;
-    }
-    ```
-
 1. Attach click events to the images.
 
     ```js
-    $('img').on('click', onClick);
+    $('#board img').on('click', onClickSquare);
 
-    function onClick() {
+    function onClickSquare() {
       console.log("You clicked a square!");
     }
     ```
 
-1. Attach an ID to each image so we know which one was clicked.
-
-    ```html
-    <img id="a1" src="s.png"><img id="a2" src="s.png"><img id="a3" src="s.png"></br>
-    <img id="b1" src="s.png"><img id="b2" src="s.png"><img id="b3" src="s.png"></br>
-    <img id="c1" src="s.png"><img id="c2" src="s.png"><img id="c3" src="s.png"></br>
-    ```
+1. Set the square to an `X` when clicked.
 
     ```js
-    function onClick(e) {
-      var id; // set this to element's id (don't remember how)
-      console.log("You clicked the", id, " square!");
+    function onClickSquare(event) {
+      var element = event.target;
+      element.src = "x.png";
     }
     ```
 
-1. Check if the square is empty.
+1. Alternate between `X` and `O` every other click so we can take turns.
 
-1. Set the square to an x when clicked.
+    ```js
+    var turn = "x";
 
-1. Keep track of whose turn it is. X or O, and change turn after every click.
+    function onClickSquare(event) {
+      var element = event.target;
 
-1. Set the square to an X or O when clicking.
+      if (turn == "x") {
+        turn = "o";
+      }
+      else {
+        turn = "x";
+      }
 
-1. Detect a win when after every turn.
+      element.src = turn + ".png";
+    }
+    ```
+
+1. Don't allow overwriting a square that already has something in it.
+
+    ```js
+    function onClickSquare(event) {
+      var element = event.target;
+
+      if (element.src == "s.png") {
+        // ...
+      }
+    }
+    ```
+
+## Find the winner
+
+1. Suppose we number the squares like this:
+
+    ```
+     0 | 1 | 2
+    ---|---|---
+     3 | 4 | 5
+    ---|---|---
+     6 | 7 | 8
+    ```
+
+1. List all the possible ways to win:
+
+  - `0 1 2` row
+  - `3 4 5` row
+  - `6 7 8` row
+  - `0 3 6` column
+  - `1 4 7` column
+  - `2 5 8` column
+  - `0 4 8` diagonal
+  - `2 4 6` diagonal
+
+1. Write a function that takes any three positions and tests if it has a winner.
+
+    ```js
+    function hasWinner(a,b,c) {
+      var s = $("#board img").toArray().map(x => x.src);
+
+      // make sure all are the same
+      if (s[a] == s[b] && s[b] == s[c]) {
+
+        // make sure it's not empty
+        if (s[a] != "s.png") {
+
+          // return the winner image
+          return s[a];
+        }
+
+      }
+
+      // no winner
+      return false;
+    }
+    ```
+
+1. Write a function to find the winner from anywhere on the board:
+
+    ```js
+    var winningLines = [
+      // rows
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+
+      // columns
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+
+      // diagonals
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    ```
+
+    ```js
+    function findWinner() {
+      for (let [a, b, c] of winningLines) {
+        let winner = hasWinner(a,b,c);
+        if (winner) {
+          return winner;
+        }
+      }
+      return false;
+    }
+    ```
+
+1. Congratulate the winning player if someone wins.
+
+    ```js
+    function onClickSquare(event) {
+      var element = event.target;
+      
+      // ...
+
+      var winner = findWinner();
+      if (winner) {
+        console.log("The winner is", winner, "!");
+      }
+    }
+    ```
+
+
+### Extra Credit
+
+1. Detect when game is over.
+
+1. Stop input to the game after it is over.
+
+1. Detect a draw.
+
+1. If someone wins, highlight the winning squares.
+
+  - For example, make `hasWinner` return `{winner: "x", line: [0, 1, 2]}` instead of just `"x"`
+
+1. Create button to start a new game (only show it when a game has ended.)
 
 [Tic-Tac-Toe]:http://en.wikipedia.org/wiki/Tic-tac-toe
