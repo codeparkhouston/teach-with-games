@@ -6,6 +6,6 @@ games may offer an engaging environment.
 
 Some sample code and curriculum ideas:
 
-1. [Tic Tac Toe](01-tic-tac-toe)
-2. [Pong](02-pong)
+1. [Tic Tac Toe](tic-tac-toe)
+2. [Pong](pong)
 
