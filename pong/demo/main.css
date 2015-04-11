@@ -1,7 +1,11 @@
+body {
+  background: #555;
+}
+
 #board {
   width: 600px;
   height: 400px;
-  background: #ddd;
+  background: #333;
   margin: 40px auto;
 
   position: relative;
@@ -10,9 +14,28 @@
 #ball {
   width: 10px;
   height: 10px;
-  background: red;
+  background: yellow;
 
   position: absolute;
   top: 100px;
   left: 300px;
+}
+
+#left-paddle, #right-paddle {
+  width: 40px;
+  height: 100px;
+}
+
+#left-paddle {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: #379;
+}
+
+#right-paddle {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background: #397;
 }

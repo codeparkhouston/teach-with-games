@@ -2,47 +2,53 @@
 
 Creating [Pong] will require the following steps:
 
-##### Some things we have to hide
+#### Starting with a wrapper model
 
-There is too much ceremony around updating the position of an element,
-that is not conducive to a learning student.
+There is too much ceremony around reading/updating the position of a DOM element,
+making it not conducive to a learning student.
 
-To make the bulk of what we are doing readable, we in turn have to create
-an unreadable `ball` model with getters and setters.
+We want to make this process as simple as accessing plain data.  Getters and
+setters can give us this.  The benefit here is that we are instilling the
+principle of writing plain data (i.e. a model) and that it is somehow
+data-bound to the objects on screen (i.e. a view).
 
 ```js
-var ballElement = document.getElementById("ball");
+function createModel(elementId) {
+  var element = document.getElementById(elementId);
+  var model;
 
-var ball = {
-  width: $(ballElement).width(),
-  height: $(ballElement).height(),
-};
+  if (element) {
+    model = {
+      // get size
+      get width() { return $(element).width(); },
+      get height() { return $(element).height(); },
 
-Object.defineProperty(ball, "x", {
-    get: function() {
-      return $(ballElement).position().left;
-    },
-    set: function(x) {
-      ballElement.style.left = x + "px";
-    },
-});
+      // get/set x (left)
+      get x() { return $(element).position().left; },
+      set x(x) { element.style.left = x + "px"; },
 
-Object.defineProperty(ball, "y", {
-    get: function() {
-      return $(ballElement).position().top;
-    },
-    set: function(y) {
-      ballElement.style.top = y + "px";
-    },
-});
+      // get/set y (top)
+      get y() { return $(element).position().top; },
+      set y(y) { element.style.top = y + "px"; },
+
+      // get/set x2 (right)
+      get x2() { return this.x + this.width; },
+      set x2(x) { this.x = x - this.width; },
+
+      // get/set y2 (bottom)
+      get y2() { return this.y + this.height; },
+      set y2(y) { this.y = y - this.height; },
+    };
+  }
+  return model;
+}
+
+var ball = createModel("ball");
+var board = createModel("board");
+var leftPaddle = createModel("left-paddle");
+var rightPaddle = createModel("right-paddle");
 ```
 
-And we have to repeat this for the paddles too.
-
-The alternative solutions are to make `ball` a simple object, whose attributes
-are read when drawing the ball to a 2D Canvas element.  The same can be
-achieved on the DOM using React.  Maybe we should use either of these since UIs
-are much better managed with this "immediate-mode" rendering.
 
 ## Add ball
 
@@ -117,35 +123,35 @@ We will add a ball that moves and bounces off the walls of the board.
     }
     ```
 
-1. Make the ball bounce off right wall.
+1. Make the ball bounce off left wall.
 
     ```js
     // this is only conceptual (we are really using the hidden board model)
     var board = document.getElementById('board').style;
 
-    var xSpeed = 5;
+    var xSpeed = -5;
 
     function tick() {
       ball.x += xSpeed;
-      if (ball.x + ball.width > board.width) {
-        ball.x = board.width - ball.width;
-        xSpeed = -5;
+      if (ball.x < 0) {
+        ball.x = 0;
+        xSpeed = 5;
       }
     }
     ```
 
-1. Make the ball bounce off left wall.
+1. Make the ball bounce off right wall.
 
     ```js
     function tick() {
       ball.x += xSpeed;
-      if (ball.x + ball.width > board.width) {
-        ball.x = board.width - ball.width;
-        xSpeed = -5;
-      }
-      else if (ball.x < 0) {
+      if (ball.x < 0) {
         ball.x = 0;
         xSpeed = 5;
+      }
+      else if (ball.x2 > board.width) {
+        ball.x2 = board.width;
+        xSpeed = -5;
       }
     }
     ```
@@ -153,29 +159,29 @@ We will add a ball that moves and bounces off the walls of the board.
 1. Add vertical movement.
 
     ```js
-    var xSpeed = 5
+    var xSpeed = -5
     var ySpeed = 5;
 
     function tick() {
       ball.x += xSpeed;
       ball.y += ySpeed;
 
-      if (ball.x + ball.width > board.width) {
-        ball.x = board.width - ball.width;
-        xSpeed = -5;
-      }
-      else if (ball.x < 0) {
+      if (ball.x < 0) {
         ball.x = 0;
         xSpeed = 5;
       }
-
-      if (ball.y + ball.height > board.height) {
-        ball.y = board.height - ball.height;
-        ySpeed = -5;
+      else if (ball.x2 > board.width) {
+        ball.x2 = board.width;
+        xSpeed = -5;
       }
-      else if (ball.y < 0) {
+
+      if (ball.y < 0) {
         ball.y = 0;
         ySpeed = 5;
+      }
+      else if (ball.y2 > board.height) {
+        ball.y2 = board.height;
+        ySpeed = -5;
       }
     }
     ```
@@ -209,13 +215,13 @@ We will add left and right paddles controlled by keys.
     #left-paddle {
       position: absolute;
       top: 0px;
-      left: -40px;
+      left: 0px;
     }
 
     #right-paddle {
       position: absolute;
       top: 0px;
-      right: -40px;
+      right: 0px;
     }
     ```
 
@@ -290,8 +296,8 @@ We will add left and right paddles controlled by keys.
       if (paddle.y < 0) {
         paddle.y = 0;
       }
-      if (paddle.y + paddle.height > board.height) {
-        paddle.y = board.height - paddle.height;
+      if (paddle.y2 > board.height) {
+        paddle.y2 = paddle.height;
       }
     }
     ```
