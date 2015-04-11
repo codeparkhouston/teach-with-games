@@ -2,6 +2,8 @@
 
 Creating [Pong] will require the following steps:
 
+## Add ball
+
 1. Create a `ball.png` image.
 
 1. Place the ball inside a board on your page.
@@ -51,23 +53,96 @@ Creating [Pong] will require the following steps:
 1. Make the ball bounce off right wall.
 
     ```js
-    var ballSpeed = 5;
+    var speed = 5;
 
     function tick() {
-      ball.style.x += ballSpeed;
+      ball.style.x += speed;
       if (ball.style.x > board.width) {
+        speed = -5;
       }
     }
     ```
 
 1. Make the ball bounce off left wall.
 
-1. Add vertical speed.
+    ```js
+    function tick() {
+      ball.style.x += speed;
+      if (ball.style.x > board.width) {
+        speed = -5;
+      }
+      else if (ball.style.x < 0) {
+        speed = 5;
+      }
+    }
+    ```
 
-1. Make ball bounce off bottom wall
+1. Simplify bounce action.
 
-1. Make ball bounce off top wall
+    ```js
+    function tick() {
+      ball.style.x += speed;
+      if (ball.style.x > board.width || ball.style.x < 0) {
+        speed *= -1;
+      }
+    }
+    ```
 
-1. ...
+1. Add vertical movement.
+
+    ```js
+    var xSpeed = 5
+    var ySpeed = 5;
+
+    function tick() {
+      ball.style.x += xSpeed;
+      ball.style.y += ySpeed;
+      if (ball.style.x > board.width || ball.style.x < 0) {
+        xSpeed *= -1;
+      }
+      if (ball.style.y > board.height || ball.style.y < 0) {
+        ySpeed *= -1;
+      }
+    }
+    ```
+
+# Add paddles
+
+1. Add paddles to the board.
+
+    ```html
+    <div id="board">
+      <div id="left-paddle"></div>
+      <div id="right-paddle"></div>
+      <img id="ball" src="ball.png>
+    </div>
+    ```
+
+1. Size both of the paddles.
+
+    ```css
+    #left-paddle, #right-paddle {
+      width: 40px;
+      height: 100px;
+    }
+    ```
+
+1. Position the paddles on the board.
+
+    ```css
+    #left-paddle {
+      position: absolute;
+      top: 0px;
+      left: -40px;
+    }
+
+    #right-paddle {
+      position: absolute;
+      top: 0px;
+      right: -40px;
+    }
+    ```
+
+1. Detect key presses...
 
 [Pong]:http://en.wikipedia.org/wiki/Pong
