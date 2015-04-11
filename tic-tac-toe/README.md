@@ -71,17 +71,21 @@ Creating [Tic-Tac-Toe] will require the following steps:
     ```js
     var turn = "x";
 
-    function onClickSquare(event) {
-      var element = event.target;
-
+    function switchTurn() {
       if (turn == "x") {
         turn = "o";
       }
       else {
         turn = "x";
       }
+    }
+
+    function onClickSquare(event) {
+      var element = event.target;
 
       setShape(element, turn);
+
+      switchTurn();
     }
     ```
 

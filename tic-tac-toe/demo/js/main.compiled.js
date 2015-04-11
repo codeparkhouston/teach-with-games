@@ -17,17 +17,20 @@ function setShape(element, shape) {
   element.src = 'img/' + shape + '.png';
 }
 
+function switchTurn() {
+  if (turn == 'x') {
+    turn = 'o';
+  } else {
+    turn = 'x';
+  }
+}
+
 function onClickSquare(event) {
   var element = event.target;
 
   if (getShape(element) == 'e') {
-    if (turn == 'x') {
-      turn = 'o';
-    } else {
-      turn = 'x';
-    }
-
     setShape(element, turn);
+    switchTurn();
 
     var winner = findWinner();
     if (winner) {
