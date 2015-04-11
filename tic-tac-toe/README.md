@@ -4,7 +4,7 @@ Creating [Tic-Tac-Toe] will require the following steps:
 
 1. Create the following images (all the same size squares):
 
-  - s.png (square empty)
+  - e.png (empty)
   - x.png
   - o.png
 
@@ -12,15 +12,15 @@ Creating [Tic-Tac-Toe] will require the following steps:
 
   ```html
   <div id="board">
-  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
-  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
-  <img src="s.png"><img src="s.png"><img src="s.png"><br/>
+  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
+  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
+  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
   </div>
   ```
 
   ```css
   #board img {
-    border: 10px solid black;
+    border: 10px solid #eee;
   }
   ```
 
@@ -43,6 +43,25 @@ Creating [Tic-Tac-Toe] will require the following steps:
     }
     ```
 
+1. Write helper functions for getting and setting a square.
+
+    ```js
+    function getShape(element) {
+      var path = element.src;
+      return path.charAt(path.length - 5);
+    }
+
+    function setShape(element, shape) {
+      element.src = shape + ".png";
+    }
+
+    function onClickSquare(event) {
+      var element = event.target;
+      console.log("square was", getShape(element));
+      setShape(element, "x");
+    }
+    ```
+
 1. Alternate between `X` and `O` every other click so we can take turns.
 
     ```js
@@ -58,7 +77,7 @@ Creating [Tic-Tac-Toe] will require the following steps:
         turn = "x";
       }
 
-      element.src = turn + ".png";
+      setShape(element, turn);
     }
     ```
 
@@ -68,7 +87,7 @@ Creating [Tic-Tac-Toe] will require the following steps:
     function onClickSquare(event) {
       var element = event.target;
 
-      if (element.src == "s.png") {
+      if (getShape(element) == "e") {
         // ...
       }
     }
@@ -101,13 +120,13 @@ Creating [Tic-Tac-Toe] will require the following steps:
 
     ```js
     function hasWinner(a,b,c) {
-      var s = $("#board img").toArray().map(x => x.src);
+      var s = $("#board img").toArray().map(getShape);
 
       // make sure all are the same
       if (s[a] == s[b] && s[b] == s[c]) {
 
         // make sure it's not empty
-        if (s[a] != "s.png") {
+        if (s[a] != "e") {
 
           // return the winner image
           return s[a];
