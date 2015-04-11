@@ -6,8 +6,6 @@ $('#board img').attr('src', 'img/e.png');
 
 $('#board img').on('click', onClickSquare);
 
-var turn = 'x';
-
 function getShape(element) {
   var path = element.src;
   return path.charAt(path.length - 5);
@@ -16,6 +14,8 @@ function getShape(element) {
 function setShape(element, shape) {
   element.src = 'img/' + shape + '.png';
 }
+
+var turn = 'x';
 
 function switchTurn() {
   if (turn == 'x') {
