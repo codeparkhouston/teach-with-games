@@ -41,7 +41,6 @@ function tick() {
 }
 
 function keepPaddleInside(paddle) {
-  paddle.y = Math.max(0, paddle.y);
   if (paddle.y < 0) {
     paddle.y = 0;
   }
