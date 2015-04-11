@@ -6,27 +6,49 @@ Creating [Pong] will require the following steps:
 
 We will add a ball that moves and bounces off the walls of the board.
 
-1. Create a `ball.png` image.
-
 1. Place the ball inside a board on your page.
 
     ```html
     <div id="board">
-      <img id="ball" src="ball.png>
+      <div id="ball"></div>
     </div>
     ```
 
-1. Give the ball absolute positioning inside a properly sized board.
+    ```css
+    #board {
+      width: 600px;
+      height: 600px;
+      background: #ddd;
+    }
+
+    #ball {
+      width: 10px;
+      height: 10px;
+      background: white;
+    }
+    ```
+
+1. To allow the ball to move freely around the board, we have to use absolute positioning.
 
     ```css
     #board {
+      width: 600px;
+      height: 600px;
+      background: #ddd;
+
+      /* NEW CODE */
       position: relative;
-      width: 500px;
-      height: 500px;
-      border: 1px solid black;
     }
+
     #ball {
+      width: 10px;
+      height: 10px;
+      background: white;
+
+      /* NEW CODE */
       position: absolute;
+      top: 0;
+      left: 0;
     }
     ```
 
@@ -45,24 +67,24 @@ We will add a ball that moves and bounces off the walls of the board.
 1. Start moving the ball.
 
     ```js
-    var ball = document.getElementById("ball");
+    var ball = document.getElementById("ball").style;
 
     function tick() {
-      ball.style.x += 5;
+      ball.x += 5;
     }
     ```
 
 1. Make the ball bounce off right wall.
 
     ```js
-    var board = document.getElementById('board');
+    var board = document.getElementById('board').style;
 
     var xSpeed = 5;
 
     function tick() {
-      ball.style.x += xSpeed;
-      if (ball.style.x + ball.style.width > board.style.width) {
-        ball.style.x = board.style.width - ball.style.width;
+      ball.x += xSpeed;
+      if (ball.x + ball.width > board.width) {
+        ball.x = board.width - ball.width;
         xSpeed = -5;
       }
     }
@@ -72,13 +94,13 @@ We will add a ball that moves and bounces off the walls of the board.
 
     ```js
     function tick() {
-      ball.style.x += xSpeed;
-      if (ball.style.x + ball.style.width > board.style.width) {
-        ball.style.x = board.style.width - ball.style.width;
+      ball.x += xSpeed;
+      if (ball.x + ball.width > board.width) {
+        ball.x = board.width - ball.width;
         xSpeed = -5;
       }
-      else if (ball.style.x < 0) {
-        ball.style.x = 0;
+      else if (ball.x < 0) {
+        ball.x = 0;
         xSpeed = 5;
       }
     }
@@ -91,24 +113,24 @@ We will add a ball that moves and bounces off the walls of the board.
     var ySpeed = 5;
 
     function tick() {
-      ball.style.x += xSpeed;
-      ball.style.y += ySpeed;
+      ball.x += xSpeed;
+      ball.y += ySpeed;
 
-      if (ball.style.x + ball.style.width > board.style.width) {
-        ball.style.x = board.style.width - ball.style.width;
+      if (ball.x + ball.width > board.width) {
+        ball.x = board.width - ball.width;
         xSpeed = -5;
       }
-      else if (ball.style.x < 0) {
-        ball.style.x = 0;
+      else if (ball.x < 0) {
+        ball.x = 0;
         xSpeed = 5;
       }
 
-      if (ball.style.y + ball.style.height > board.style.height) {
-        ball.style.y = board.style.height - ball.style.height;
+      if (ball.y + ball.height > board.height) {
+        ball.y = board.height - ball.height;
         ySpeed = -5;
       }
-      else if (ball.style.y < 0) {
-        ball.style.y = 0;
+      else if (ball.y < 0) {
+        ball.y = 0;
         ySpeed = 5;
       }
     }
@@ -156,8 +178,8 @@ We will add left and right paddles controlled by keys.
 1. Add paddle speeds for left and right players (zero for now).
 
     ```js
-    var leftPaddle = document.getElementById("left-paddle");
-    var rightPaddle = document.getElementById("right-paddle");
+    var leftPaddle = document.getElementById("left-paddle").style;
+    var rightPaddle = document.getElementById("right-paddle").style;
 
     var leftSpeed = 0;
     var rightSpeed = 0;
@@ -165,8 +187,8 @@ We will add left and right paddles controlled by keys.
     function tick() {
       // ... previous ball code ...
 
-      leftPaddle.style.y += leftSpeed;
-      rightPaddle.style.y += rightSpeed;
+      leftPaddle.y += leftSpeed;
+      rightPaddle.y += rightSpeed;
     }
     ```
 
@@ -211,20 +233,20 @@ We will add left and right paddles controlled by keys.
     function tick() {
       // ... previous ball code ...
 
-      leftPaddle.style.y += leftSpeed;
-      rightPaddle.style.y += rightSpeed;
+      leftPaddle.y += leftSpeed;
+      rightPaddle.y += rightSpeed;
 
       keepPaddleInside(leftPaddle);
       keepPaddleInside(rightPaddle);
     }
 
     function keepPaddleInside(paddle) {
-      paddle.style.y = Math.max(0, paddle.style.y);
-      if (paddle.style.y < 0) {
-        paddle.style.y = 0;
+      paddle.y = Math.max(0, paddle.y);
+      if (paddle.y < 0) {
+        paddle.y = 0;
       }
-      if (paddle.style.y + paddle.style.height > board.style.height) {
-        paddle.style.y = board.style.height - paddle.style.height;
+      if (paddle.y + paddle.height > board.height) {
+        paddle.y = board.height - paddle.height;
       }
     }
     ```
@@ -239,8 +261,8 @@ paddle.
 
     ```js
     function ballTouchingPaddle(paddle) {
-      return !(paddle.style.y + paddle.style.height < ball.style.y ||
-               ball.style.y + ball.style.width < paddle.style.y);
+      return !(paddle.y + paddle.height < ball.y ||
+               ball.y + ball.width < paddle.y);
     }
     ```
 
@@ -248,18 +270,18 @@ paddle.
 
     ```js
     function tick() {
-      ball.style.x += xSpeed;
-      ball.style.y += ySpeed;
+      ball.x += xSpeed;
+      ball.y += ySpeed;
 
-      if (ball.style.x + ball.style.width > board.style.width) {
+      if (ball.x + ball.width > board.width) {
         if (ballTouchingPaddle(rightPaddle)) { // <-- NEW CODE
-          ball.style.x = board.style.width - ball.style.width;
+          ball.x = board.width - ball.width;
           xSpeed = -5;
         }
       }
-      else if (ball.style.x < 0) {
+      else if (ball.x < 0) {
         if (ballTouchingPaddle(leftPaddle)) { // <-- NEW CODE
-          ball.style.x = 0;
+          ball.x = 0;
           xSpeed = 5;
         }
       }
@@ -276,21 +298,21 @@ paddle.
     }
 
     function tick() {
-      ball.style.x += xSpeed;
-      ball.style.y += ySpeed;
+      ball.x += xSpeed;
+      ball.y += ySpeed;
 
-      if (ball.style.x + ball.style.width > board.style.width) {
+      if (ball.x + ball.width > board.width) {
         if (ballTouchingPaddle(rightPaddle)) {
-          ball.style.x = board.style.width - ball.style.width;
+          ball.x = board.width - ball.width;
           xSpeed = -5;
         }
         else {
           makeWin("left"); // <-- NEW CODE
         }
       }
-      else if (ball.style.x < 0) {
+      else if (ball.x < 0) {
         if (ballTouchingPaddle(leftPaddle)) {
-          ball.style.x = 0;
+          ball.x = 0;
           xSpeed = 5;
         }
         else {
@@ -313,8 +335,8 @@ paddle.
     }
 
     function tick() {
-      ball.style.x += xSpeed;
-      ball.style.y += ySpeed;
+      ball.x += xSpeed;
+      ball.y += ySpeed;
 
       if (!gameover) {
         // ...
@@ -336,8 +358,8 @@ paddle.
       gameover = false;
 
       // reset ball position
-      ball.style.x = 0;
-      ball.style.y = 0;
+      ball.x = 0;
+      ball.y = 0;
 
       // reset ball speeds
       xSpeed = 5;
