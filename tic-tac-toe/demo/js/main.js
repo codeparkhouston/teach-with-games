@@ -1,4 +1,6 @@
 
+$('#board img').attr('src', 'img/e.png');
+
 $('#board img').on('click', onClickSquare);
 
 var turn = "x";
@@ -9,7 +11,7 @@ function getShape(element) {
 }
 
 function setShape(element, shape) {
-  element.src = shape + ".png";
+  element.src = "img/" + shape + ".png";
 }
 
 function onClickSquare(event) {

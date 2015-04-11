@@ -6,7 +6,7 @@
 
     ```
     $ npm install --global babel
-    $ babel main.js --watch --out-file main.compiled.js
+    $ babel js/main.js --watch --out-file js/main.compiled.js
     ```
 
 1. Open `index.html`

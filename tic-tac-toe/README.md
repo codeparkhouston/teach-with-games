@@ -12,9 +12,9 @@ Creating [Tic-Tac-Toe] will require the following steps:
 
   ```html
   <div id="board">
-  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
-  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
-  <img src="e.png"><img src="e.png"><img src="e.png"><br/>
+    <img><img><img><br>
+    <img><img><img><br>
+    <img><img><img><br>
   </div>
   ```
 
@@ -22,6 +22,10 @@ Creating [Tic-Tac-Toe] will require the following steps:
   #board img {
     border: 10px solid #eee;
   }
+  ```
+
+  ```js
+  $('#board img').attr('src', 'e.png');
   ```
 
 1. Attach click events to the images.
