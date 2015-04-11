@@ -13,6 +13,9 @@ principle of writing plain data (i.e. a model) and that it is somehow
 data-bound to the objects on screen (i.e. a view).
 
 ```js
+
+// we should just "hide" this from the student in the beginning
+// (in models.js)
 function createModel(elementId) {
   var element = document.getElementById(elementId);
   var model;
@@ -47,6 +50,14 @@ var ball = createModel("ball");
 var board = createModel("board");
 var leftPaddle = createModel("left-paddle");
 var rightPaddle = createModel("right-paddle");
+
+// move the ball
+ball.x += 5;
+
+// see if the right side of the ball moved past the board boundary
+if (ball.x2 > board.width) {
+  // ...
+}
 ```
 
 
