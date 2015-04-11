@@ -2,6 +2,48 @@
 
 Creating [Pong] will require the following steps:
 
+##### Some things we have to hide
+
+There is too much ceremony around updating the position of an element,
+that is not conducive to a learning student.
+
+To make the bulk of what we are doing readable, we in turn have to create
+an unreadable `ball` model with getters and setters.
+
+```js
+var ballElement = document.getElementById("ball");
+
+var ball = {
+  width: $(ballElement).width(),
+  height: $(ballElement).height(),
+};
+
+Object.defineProperty(ball, "x", {
+    get: function() {
+      return $(ballElement).position().left;
+    },
+    set: function(x) {
+      ballElement.style.left = x + "px";
+    },
+});
+
+Object.defineProperty(ball, "y", {
+    get: function() {
+      return $(ballElement).position().top;
+    },
+    set: function(y) {
+      ballElement.style.top = y + "px";
+    },
+});
+```
+
+And we have to repeat this for the paddles too.
+
+The alternative solutions are to make `ball` a simple object, whose attributes
+are read when drawing the ball to a 2D Canvas element.  The same can be
+achieved on the DOM using React.  Maybe we should use either of these since UIs
+are much better managed with this "immediate-mode" rendering.
+
 ## Add ball
 
 We will add a ball that moves and bounces off the walls of the board.
@@ -67,6 +109,7 @@ We will add a ball that moves and bounces off the walls of the board.
 1. Start moving the ball.
 
     ```js
+    // this is only conceptual (we are really using the hidden ball model)
     var ball = document.getElementById("ball").style;
 
     function tick() {
@@ -77,6 +120,7 @@ We will add a ball that moves and bounces off the walls of the board.
 1. Make the ball bounce off right wall.
 
     ```js
+    // this is only conceptual (we are really using the hidden board model)
     var board = document.getElementById('board').style;
 
     var xSpeed = 5;
@@ -178,6 +222,7 @@ We will add left and right paddles controlled by keys.
 1. Add paddle speeds for left and right players (zero for now).
 
     ```js
+    // this is only conceptual (we are really using the hidden paddle models)
     var leftPaddle = document.getElementById("left-paddle").style;
     var rightPaddle = document.getElementById("right-paddle").style;
 
