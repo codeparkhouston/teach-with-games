@@ -7,5 +7,10 @@ games may offer an engaging environment.
 Some sample code and curriculum ideas:
 
 1. [Tic Tac Toe](tic-tac-toe)
+
+    ![screen](tic-tac-toe/demo/screen.png)
+
 2. [Pong](pong)
+
+    ![screen](pong/demo/screen.gif)
 

@@ -1,5 +1,7 @@
 # Pong
 
+![screen](demo/screen.gif)
+
 Creating [Pong] will require the following steps:
 
 #### Starting with a wrapper model

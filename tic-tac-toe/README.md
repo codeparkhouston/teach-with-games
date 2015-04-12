@@ -1,5 +1,7 @@
 # Tic Tac Toe
 
+![screen](demo/screen.png)
+
 Creating [Tic-Tac-Toe] will require the following steps:
 
 1. Create the following images (all the same size squares):
