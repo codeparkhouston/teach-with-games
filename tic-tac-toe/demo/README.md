@@ -1,7 +1,5 @@
 # Tic-tac-toe Demo
 
-![screen](screen.png)
-
 1. To allow simple destructuring assignment syntax, we use `babel`:
 
     ```
