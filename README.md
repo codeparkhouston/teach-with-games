@@ -6,11 +6,11 @@ games may offer an engaging environment.
 
 Some sample code and curriculum ideas:
 
-1. [Tic Tac Toe](tic-tac-toe)
+## [Tic Tac Toe](tic-tac-toe)
 
-    ![screen](tic-tac-toe/demo/screen.png)
+[![screen](tic-tac-toe/demo/screen.png)](tic-tac-toe)
 
-2. [Pong](pong)
+## [Pong](pong)
 
-    ![screen](pong/demo/screen.gif)
+[![screen](pong/demo/screen.gif)](pong)
 
