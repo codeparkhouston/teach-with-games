@@ -13,11 +13,13 @@ var rightSpeed = 0;
 
 var score = { left: 0, right: 0};
 
-function makeWin(player) {
-  console.log("player", player, "wins!");
-
+function addScore(player) {
   score[player] += 1;
-  console.log(score);
+
+  var el = document.getElementById(player+"-score");
+  el.innerHTML = score[player];
+  el.style.opacity = 0.5;
+  $(el).animate({opacity: 0.1}, 500);
 }
 
 function tick() {
@@ -29,12 +31,12 @@ function tick() {
   if (ball.x < 0) {
     ball.x = 0;
     xSpeed = 5;
-    makeWin("right");
+    addScore("right");
   }
   else if (ball.x2 > board.width) {
     ball.x2 = board.width;
     xSpeed = -5;
-    makeWin("left");
+    addScore("left");
   }
 
   // bounce against left and right paddles

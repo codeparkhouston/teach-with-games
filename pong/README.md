@@ -313,7 +313,7 @@ We will add left and right paddles controlled by keys.
     }
     ```
 
-## Modify ball
+## Make ball bounce off paddles
 
 We will modify the ball to exit the board and tally a win if it moves past a
 paddle.
@@ -351,47 +351,86 @@ paddle.
     }
     ```
 
+## Add scoring
+
+1. Add scores to the board.
+
+    ```html
+    <div id="board">
+      <div id="left-score">0</div>
+      <div id="right-score">0</div>
+
+      <div id="left-paddle"></div>
+      <div id="right-paddle"></div>
+
+      <img id="ball" src="ball.png>
+    </div>
+    ```
+
+1. Position scores on the board.
+
+    ```css
+    #left-score {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 40px;
+    }
+
+    #right-score {
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin: 40px;
+    }
+    ```
+
 1. Make other player win if ball passes the other player's paddle.
 
     ```js
-    function makeWin(player) {
-      console.log("player", player, "wins!");
+    var score = { left: 0, right: 0};
+
+    function addScore(player) {
+      console.log("player", player, "scores!");
+      score[player] += 1;
+      console.log("score:",score);
     }
 
     function tick() {
-      ball.x += xSpeed;
-      ball.y += ySpeed;
+      // ...
 
       if (ball.x < 0) {
         ball.x = 0;
         xSpeed = 5;
-        makeWin("right");
+        addScore("right"); // <-- NEW CODE
       }
       else if (ball.x2 > board.width) {
         ball.x2 = board.width;
         xSpeed = -5;
-        makeWin("left");
+        addScore("left"); // <-- NEW CODE
       }
 
       // ...
     }
     ```
 
-1. Keep score.
+1. Update on-screen score and animate.
 
     ```js
-    var score = { left: 0, right: 0};
+    function addScore(player) {
+      // ...
 
-    function makeWin(player) {
-      gameover = true;
-      console.log("player", player, "wins!");
-
-      score[player] += 1;
-      console.log("score", score);
+      var el = document.getElementById(player+"-score");
+      el.innerHTML = score[player];
+      el.style.opacity = 0.5;
+      $(el).animate({opacity: 0.1}, 500);
     }
     ```
 
 ## Extra Credit
+
+1. Create a score model that will update the on-screen score automatically
+   (like the models for ball and paddles).
 
 1. Set ball `ySpeed` depending on where it hits the paddle.
 

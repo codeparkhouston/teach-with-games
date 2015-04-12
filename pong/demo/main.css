@@ -39,3 +39,20 @@ body {
   right: 0px;
   background: #397;
 }
+
+#left-score, #right-score {
+  position: absolute;
+  top: 0;
+  margin: 40px 140px;
+  font: 120px sans-serif;
+  color: white;
+  opacity: 0.1;
+}
+
+#left-score {
+  left: 0;
+}
+
+#right-score {
+  right: 0;
+}
