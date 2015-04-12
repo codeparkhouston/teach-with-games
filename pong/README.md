@@ -2,7 +2,7 @@
 
 ![screen](demo/screen.gif)
 
-Creating [Pong] will require the following steps:
+The [final code is here](demo/js/main.js), but the following implements the code step-by-step.
 
 #### Starting with a wrapper model
 

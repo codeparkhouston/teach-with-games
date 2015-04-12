@@ -2,7 +2,7 @@
 
 ![screen](demo/screen.png)
 
-Creating [Tic-Tac-Toe] will require the following steps:
+The [final code is here](demo/js/main.js), but the following implements the code step-by-step.
 
 1. Create the following images (all the same size squares):
 
