@@ -303,7 +303,6 @@ We will add left and right paddles controlled by keys.
     }
 
     function keepPaddleInside(paddle) {
-      paddle.y = Math.max(0, paddle.y);
       if (paddle.y < 0) {
         paddle.y = 0;
       }
@@ -385,7 +384,7 @@ paddle.
     }
     ```
 
-1. Make other player win if ball passes the other player's paddle.
+1. Add point to player if ball passes the other's paddle.
 
     ```js
     var score = { left: 0, right: 0};
