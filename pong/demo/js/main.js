@@ -11,19 +11,47 @@ var ySpeed = 5;
 var leftSpeed = 0;
 var rightSpeed = 0;
 
+var score = { left: 0, right: 0};
+
+function makeWin(player) {
+  console.log("player", player, "wins!");
+
+  score[player] += 1;
+  console.log(score);
+}
+
 function tick() {
+  // move ball
   ball.x += xSpeed;
   ball.y += ySpeed;
 
+  // bounce against left and right walls
   if (ball.x < 0) {
     ball.x = 0;
     xSpeed = 5;
+    makeWin("right");
   }
   else if (ball.x2 > board.width) {
     ball.x2 = board.width;
     xSpeed = -5;
+    makeWin("left");
   }
 
+  // bounce against left and right paddles
+  if (ball.x2 >= rightPaddle.x &&
+      ball.x2 - xSpeed <= rightPaddle.x &&
+      ballTouchingPaddle(rightPaddle)) {
+    ball.x2 = rightPaddle.x;
+    xSpeed = -5;
+  }
+  if (ball.x <= leftPaddle.x2 &&
+      ball.x - xSpeed >= leftPaddle.x2 &&
+      ballTouchingPaddle(leftPaddle)) {
+    ball.x = leftPaddle.x2;
+    xSpeed = 5;
+  }
+
+  // bounce against top and bottom walls
   if (ball.y < 0) {
     ball.y = 0;
     ySpeed = 5;
@@ -33,11 +61,15 @@ function tick() {
     ySpeed = -5;
   }
 
+  // move paddles
   leftPaddle.y += leftSpeed;
   rightPaddle.y += rightSpeed;
-
   keepPaddleInside(leftPaddle);
   keepPaddleInside(rightPaddle);
+}
+
+function ballTouchingPaddle(paddle) {
+  return !(paddle.y2 < ball.y || ball.y2 < paddle.y);
 }
 
 function keepPaddleInside(paddle) {

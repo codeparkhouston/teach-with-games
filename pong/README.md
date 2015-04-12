@@ -323,29 +323,28 @@ paddle.
 
     ```js
     function ballTouchingPaddle(paddle) {
-      return !(paddle.y + paddle.height < ball.y ||
-               ball.y + ball.width < paddle.y);
+      return !(paddle.y2 < ball.y || ball.y2 < paddle.y);
     }
     ```
 
-1. Modify ball to bounce on left and right walls if they touch the paddle.
+1. Modify ball to bounce off left and right paddles if they touch the paddle (advanced).
 
     ```js
     function tick() {
-      ball.x += xSpeed;
-      ball.y += ySpeed;
+      // ...
 
-      if (ball.x + ball.width > board.width) {
-        if (ballTouchingPaddle(rightPaddle)) { // <-- NEW CODE
-          ball.x = board.width - ball.width;
-          xSpeed = -5;
-        }
+      if (ball.x2 >= rightPaddle.x &&
+          ball.x2 - xSpeed <= rightPaddle.x &&
+          ballTouchingPaddle(rightPaddle)) {
+        ball.x2 = rightPaddle.x;
+        xSpeed = -5;
       }
-      else if (ball.x < 0) {
-        if (ballTouchingPaddle(leftPaddle)) { // <-- NEW CODE
-          ball.x = 0;
-          xSpeed = 5;
-        }
+
+      if (ball.x <= leftPaddle.x2 &&
+          ball.x - xSpeed >= leftPaddle.x2 &&
+          ballTouchingPaddle(leftPaddle)) {
+        ball.x = leftPaddle.x2;
+        xSpeed = 5;
       }
 
       // ...
@@ -363,69 +362,18 @@ paddle.
       ball.x += xSpeed;
       ball.y += ySpeed;
 
-      if (ball.x + ball.width > board.width) {
-        if (ballTouchingPaddle(rightPaddle)) {
-          ball.x = board.width - ball.width;
-          xSpeed = -5;
-        }
-        else {
-          makeWin("left"); // <-- NEW CODE
-        }
+      if (ball.x < 0) {
+        ball.x = 0;
+        xSpeed = 5;
+        makeWin("right");
       }
-      else if (ball.x < 0) {
-        if (ballTouchingPaddle(leftPaddle)) {
-          ball.x = 0;
-          xSpeed = 5;
-        }
-        else {
-          makeWin("right"); // <-- NEW CODE
-        }
+      else if (ball.x2 > board.width) {
+        ball.x2 = board.width;
+        xSpeed = -5;
+        makeWin("left");
       }
 
       // ...
-    }
-    ```
-
-1. Stop the game when a player wins.
-
-    ```js
-    var gameover = false;
-
-    function makeWin(player) {
-      gameover = true;
-      console.log("player", player, "wins!");
-    }
-
-    function tick() {
-      ball.x += xSpeed;
-      ball.y += ySpeed;
-
-      if (!gameover) {
-        // ...
-      }
-    }
-    ```
-
-1. Restart the game after some delay when a player wins.
-
-    ```js
-    function makeWin(player) {
-      gameover = true;
-      console.log("player", player, "wins!");
-
-      setTimeout(restartGame, 2000); // <-- restart in 2 seconds
-    }
-
-    function restartGame() {
-      gameover = false;
-
-      // reset ball position
-      ball.x = 0;
-      ball.y = 0;
-
-      // reset ball speeds
-      xSpeed = 5;
-      ySpeed = 5;
     }
     ```
 
@@ -440,8 +388,6 @@ paddle.
 
       score[player] += 1;
       console.log("score", score);
-
-      setTimeout(restartGame, 2000);
     }
     ```
 
