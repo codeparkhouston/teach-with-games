@@ -37,17 +37,17 @@ function onClickSquare(event) {
   }
 }
 
-function hasWinner(a,b,c) {
-  var s = $("#board img").toArray().map(getShape);
+function hasWinner(pos1, pos2, pos3) {
+  var boardShapes = $("#board img").toArray().map(getShape);
 
   // make sure all are the same
-  if (s[a] == s[b] && s[b] == s[c]) {
+  if (boardShapes[pos1] == boardShapes[pos2] && boardShapes[pos2] == boardShapes[pos3]) {
 
     // make sure it's not empty
-    if (s[a] != "e") {
+    if (boardShapes[pos1] != "e") {
 
       // return the winner image
-      return s[a];
+      return boardShapes[pos1];
     }
 
   }
@@ -69,13 +69,19 @@ var winningLines = [
 
   // diagonals
   [0, 4, 8],
-  [2, 4, 6],
+  [2, 4, 6]
 ];
 
 function findWinner() {
-  for (let [a, b, c] of winningLines) {
-    let winner = hasWinner(a,b,c);
-    if (winner) {
+  for (i in winningLines){
+    var line = winningLines[i];
+
+    var pos1 = line[0];
+    var pos2 = line[1];
+    var pos3 = line[2];
+
+    var winner  = hasWinner(pos1, pos2, pos3);
+    if(winner){
       return winner;
     }
   }
